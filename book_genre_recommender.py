@@ -1,11 +1,12 @@
 import streamlit as st
 
+# Page setup
 st.set_page_config(page_title="Book Genre Recommender", page_icon="📚")
 
 st.title("📚 Book Genre Recommender")
-st.subheader("Find your perfect book genre based on your interests")
+st.subheader("Discover your ideal book genres — and get some great titles to start with!")
 
-# Questions
+# Questionnaire
 name = st.text_input("What's your name?")
 
 interests = st.multiselect(
@@ -33,8 +34,58 @@ mood = st.selectbox(
     ["Relaxing", "Excited", "Curious", "Romantic", "Spooked", "Inspired"]
 )
 
-if st.button("Suggest Genre"):
-    st.write(f"Thanks, {name or 'reader'}! Here's your suggested genre(s):")
+# Genre-to-book mapping
+book_recommendations = {
+    "Romance 💕": [
+        "Pride and Prejudice by Jane Austen",
+        "The Notebook by Nicholas Sparks",
+        "It Ends With Us by Colleen Hoover"
+    ],
+    "Mystery / Thriller 🔍": [
+        "Gone Girl by Gillian Flynn",
+        "The Girl with the Dragon Tattoo by Stieg Larsson",
+        "The Da Vinci Code by Dan Brown"
+    ],
+    "Fantasy 🐉": [
+        "Harry Potter Series by J.K. Rowling",
+        "The Name of the Wind by Patrick Rothfuss",
+        "A Court of Thorns and Roses by Sarah J. Maas"
+    ],
+    "Science Fiction 🚀": [
+        "Dune by Frank Herbert",
+        "The Martian by Andy Weir",
+        "Neuromancer by William Gibson"
+    ],
+    "Historical Fiction 🏛️": [
+        "The Book Thief by Markus Zusak",
+        "All the Light We Cannot See by Anthony Doerr",
+        "The Nightingale by Kristin Hannah"
+    ],
+    "Horror 👻": [
+        "The Shining by Stephen King",
+        "The Haunting of Hill House by Shirley Jackson",
+        "Mexican Gothic by Silvia Moreno-Garcia"
+    ],
+    "Humor / Satire 😂": [
+        "Good Omens by Neil Gaiman & Terry Pratchett",
+        "Catch-22 by Joseph Heller",
+        "Me Talk Pretty One Day by David Sedaris"
+    ],
+    "Philosophical / Literary Fiction 📘": [
+        "Siddhartha by Hermann Hesse",
+        "The Stranger by Albert Camus",
+        "Norwegian Wood by Haruki Murakami"
+    ],
+    "General Fiction 📚": [
+        "Where the Crawdads Sing by Delia Owens",
+        "Eleanor Oliphant Is Completely Fine by Gail Honeyman",
+        "Little Fires Everywhere by Celeste Ng"
+    ]
+}
+
+# Logic to generate genre suggestions
+if st.button("Suggest Genre and Books"):
+    st.write(f"Thanks, {name or 'reader'}! Based on your answers:")
 
     suggestions = set()
 
@@ -59,4 +110,8 @@ if st.button("Suggest Genre"):
         suggestions.add("General Fiction 📚")
 
     for genre in suggestions:
-        st.success(f"- {genre}")
+        st.markdown(f"### 🎯 {genre}")
+        st.write("Recommended books:")
+        for book in book_recommendations.get(genre, []):
+            st.write(f"- {book}")
+
